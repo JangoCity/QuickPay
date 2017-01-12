@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
-using QuickPay.WxPay.Request;
 
-namespace QuickPay.WxPay
+namespace QuickPay.Common
 {
-    public class WxPayData
+    public class UnilayerXml
     {
         private readonly SortedDictionary<string, object> _values = new SortedDictionary<string, object>();
-
-        public WxPayData()
+        public UnilayerXml()
         {
+
         }
 
-        public WxPayData(string xml)
+        public UnilayerXml(string xml)
         {
             var xmlDoc = new XmlDocument();
             xmlDoc.LoadXml(xml);
@@ -25,20 +21,20 @@ namespace QuickPay.WxPay
             {
                 foreach (XmlNode node in root.ChildNodes)
                 {
-                    XmlElement xe = (XmlElement) node;
+                    var xe = (XmlElement)node;
                     _values[xe.Name] = xe.InnerText; //获取xml的键值对到WxPayData内部的数据中
                 }
             }
         }
 
-        /// <summary>设置key和value
+        /// <summary>赋值
         /// </summary>
         public void SetValue(string key, object value)
         {
             _values[key] = value;
         }
 
-        /// <summary>根据key获取value
+        /// <summary>取值
         /// </summary>
         public object GetValue(string key)
         {
@@ -47,56 +43,40 @@ namespace QuickPay.WxPay
             return o;
         }
 
-        /// <summary>是否已经设置某个值
+        /// <summary>判断某个key是否已经赋值
         /// </summary>
-        public bool IsSet(string key)
+        public bool HasValue(string key)
         {
             object o;
             _values.TryGetValue(key, out o);
             return null != o;
         }
 
-        /// <summary>获取数据
-        /// </summary>
         public SortedDictionary<string, object> GetValues()
         {
             return _values;
         }
 
-        /// <summary>将数据转换为xml
+        /// <summary>转换为xml字符串
         /// </summary>
         public string ToXml()
         {
-            if (!_values.Any())
-            {
-                throw new WxPayException("WxPayData数据为空!");
-            }
             var sb = new StringBuilder();
             sb.Append($"<xml>");
             foreach (var kv in _values)
             {
-                if (kv.Value == null)
-                {
-                    throw new WxPayException($"WxPayData内部含有值为null的字段,key:{kv.Key}");
-                }
                 if (kv.Value is int)
                 {
                     sb.Append($"<{kv.Key}>{kv.Value}</{kv.Value}>");
                 }
-                else if (kv.Value is string)
+                if (kv.Value is string)
                 {
                     sb.Append($"<{kv.Key}><![CDATA[{kv.Value}]]></{kv.Value}>");
-                }
-                else
-                {
-                    throw new WxPayException("WxPayData字段数据类型错误!");
                 }
             }
             sb.Append($"</xml>");
             return sb.ToString();
         }
-
-        
 
     }
 }

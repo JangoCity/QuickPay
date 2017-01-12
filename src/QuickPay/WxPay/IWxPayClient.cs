@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 namespace QuickPay.WxPay
 {
     public interface IWxPayClient
     {
+        Task<T> ExecuteAsync<T>(IWxPayRequest<T> request) where T : WxPayResponse;
     }
 }
