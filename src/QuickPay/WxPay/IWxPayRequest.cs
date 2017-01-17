@@ -22,8 +22,5 @@
         /// </summary>
         string SignType { get; set; }
 
-        /// <summary>校验参数
-        /// </summary>
-        bool Verify();
     }
 }

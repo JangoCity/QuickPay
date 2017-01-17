@@ -26,10 +26,6 @@
         /// </summary>
         [WxPayDataElement("nonce_str")]
         public string Noncestr { get; set; }
-
-        public bool Verify()
-        {
-            return true;
-        }
+ 
     }
 }
