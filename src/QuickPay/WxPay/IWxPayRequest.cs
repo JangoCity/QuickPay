@@ -22,5 +22,6 @@
         /// </summary>
         string SignType { get; set; }
 
+        bool VerifyData();
     }
 }

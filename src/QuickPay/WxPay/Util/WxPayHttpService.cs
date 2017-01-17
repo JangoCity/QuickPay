@@ -5,7 +5,8 @@ using System.Net.Security;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
-namespace QuickPay.WxPay
+
+namespace QuickPay.WxPay.Util
 {
     public class WxPayHttpService
     {
@@ -83,8 +84,8 @@ namespace QuickPay.WxPay
 #if NET45
             catch (System.Threading.ThreadAbortException e)
             {
-                //Log.Error("HttpService", "Thread - caught ThreadAbortException - resetting.");
-                //Log.Error("Exception message: {0}", e.Message);
+                Log.Error("HttpService", "Thread - caught ThreadAbortException - resetting.");
+                Log.Error("Exception message: {0}", e.Message);
                 System.Threading.Thread.ResetAbort();
             }
 #endif
@@ -163,8 +164,8 @@ namespace QuickPay.WxPay
 #if NET45
             catch (System.Threading.ThreadAbortException e)
             {
-                //Log.Error("HttpService", "Thread - caught ThreadAbortException - resetting.");
-                //Log.Error("Exception message: {0}", e.Message);
+                Log.Error("HttpService", "Thread - caught ThreadAbortException - resetting.");
+                Log.Error("Exception message: {0}", e.Message);
                 System.Threading.Thread.ResetAbort();
             }
 #endif

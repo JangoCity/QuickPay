@@ -1,4 +1,5 @@
 ﻿using QuickPay.WxPay.Response;
+using QuickPay.WxPay.Util;
 
 namespace QuickPay.WxPay.Request
 {
@@ -97,5 +98,19 @@ namespace QuickPay.WxPay.Request
         /// </summary>
         [WxPayDataElement("openid", false)]
         public string OpenId { get; set; }
+
+        public override bool VerifyData()
+        {
+            var verify= WxPayUtil.VerifyRequestData(this);
+            //如果支付类型是JsApi
+            if (TradeType == WxPayConsts.JsApi)
+            {
+                if (string.IsNullOrWhiteSpace(OpenId))
+                {
+                    throw new WxPayException($"参数OpenId不能为空");
+                }
+            }
+            return verify;
+        }
     }
 }

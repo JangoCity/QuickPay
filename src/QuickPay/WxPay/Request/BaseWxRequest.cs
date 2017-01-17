@@ -26,6 +26,9 @@
         /// </summary>
         [WxPayDataElement("nonce_str")]
         public string Noncestr { get; set; }
- 
+
+        /// <summary>验证参数
+        /// </summary>
+        public abstract bool VerifyData();
     }
 }
