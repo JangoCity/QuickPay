@@ -2,7 +2,6 @@
   "version": "1.0.0-*",
 
   "dependencies": {
- 
   },
 
   "frameworks": {
@@ -10,11 +9,13 @@
       "imports": "dnxcore50",
       "dependencies": {
         "NETStandard.Library": "1.6.1",
-        "System.Xml.XmlDocument": "4.3.0"
+        "System.Xml.XmlDocument": "4.3.0",
+        "System.Net.Requests": "4.3.0"
       }
     },
     "net45": {
       "frameworkAssemblies": {
+        "System.Web": "4.0.0.0",
         "System.Xml": "4.0.0.0"
       }
     }
