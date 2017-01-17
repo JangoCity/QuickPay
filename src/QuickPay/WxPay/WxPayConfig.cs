@@ -27,5 +27,8 @@
         /// <summary>签名类型
         /// </summary>
         public string SignType { get; set; } = "MD5";
+        /// <summary>SSL证书
+        /// </summary>
+        public string SslPassword { get; set; } 
     }
 }
