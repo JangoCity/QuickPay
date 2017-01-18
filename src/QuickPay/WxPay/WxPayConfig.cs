@@ -12,6 +12,10 @@
         /// </summary>
         public string MchId { get; set; }
 
+        /// <summary>密码
+        /// </summary>
+        public string Appsecret { get; set; }
+
         /// <summary>本地IP地址
         /// </summary>
         public string LocalAddress { get; set; }
@@ -31,5 +35,9 @@
         /// <summary>SSL证书
         /// </summary>
         public string SslPassword { get; set; }
+
+        /// <summary>获取AccessToken的Url地址
+        /// </summary>
+        public string AccessTokenUrl { get; set; } = "https://api.weixin.qq.com/sns/oauth2/access_token";
     }
 }

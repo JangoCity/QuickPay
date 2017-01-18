@@ -93,6 +93,28 @@ namespace QuickPay.WxPay
             return sb.ToString();
         }
 
+        /// <summary>转换成拼接的Url
+        /// </summary>
+        public string ToUrl()
+        {
+            var sb = new StringBuilder();
+            foreach (var pair in _values)
+            {
+                if (pair.Value == null)
+                {
+                    throw new WxPayException("WxPayData内部含有值为null的字段!");
+                }
+                if (pair.Key != "sign" && pair.Value.ToString() != "")
+                {
+                    sb.Append($"{pair.Key}={pair.Value}&");
+                }
+            }
+            if (sb.Length > 1)
+            {
+                sb.Remove(sb.Length - 1, 1);
+            }
+            return sb.ToString();
+        }
         
 
     }

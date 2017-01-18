@@ -1,16 +1,13 @@
 ﻿using QuickPay.WxPay.Response;
-using QuickPay.WxPay.Util;
-
 namespace QuickPay.WxPay.Request
 {
     /// <summary>UnifiedOrderResponse,统一下单
     /// </summary>
-    public class UnifiedOrderRequest : BaseWxRequest<UnifiedOrderResponse>
+    public class UnifiedOrderRequest : BaseRequest<UnifiedOrderResponse>
     {
-        public UnifiedOrderRequest()
-        {
-            Url = "https://api.mch.weixin.qq.com/pay/unifiedorder";
-        }
+        /// <summary>统一下单接口地址
+        /// </summary>
+        public override string Url { get; } = "https://api.mch.weixin.qq.com/pay/unifiedorder";
 
         /// <summary>商品简单描述，该字段请按照规范传递
         /// </summary>
@@ -42,11 +39,12 @@ namespace QuickPay.WxPay.Request
         [WxPayDataElement("trade_type")]
         public string TradeType { get; set; }
 
-
+        /// <summary>商户系统内部的订单号,32个字符内、可包含字母
+        /// </summary>
+        [WxPayDataElement("nonce_str")]
+        public override string NonceStr { get; set; }
 
         /********************非必须参数********************/
-
-
         /// <summary>自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
         /// </summary>
         [WxPayDataElement("device_info", false)]
@@ -99,18 +97,5 @@ namespace QuickPay.WxPay.Request
         [WxPayDataElement("openid", false)]
         public string OpenId { get; set; }
 
-        public override bool VerifyData()
-        {
-            var verify= WxPayUtil.VerifyRequestData(this);
-            //如果支付类型是JsApi
-            if (TradeType == WxPayConsts.JsApi)
-            {
-                if (string.IsNullOrWhiteSpace(OpenId))
-                {
-                    throw new WxPayException($"参数OpenId不能为空");
-                }
-            }
-            return verify;
-        }
     }
 }
