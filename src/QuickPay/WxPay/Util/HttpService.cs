@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace QuickPay.WxPay.Util
 {
-    public class WxPayHttpService
+    public class HttpService
     {
         /// <summary>
         /// </summary>

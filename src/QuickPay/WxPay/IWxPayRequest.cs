@@ -6,16 +6,8 @@
         /// </summary>
         string Url { get; }
 
-        /// <summary>微信支付分配的公众账号ID（企业号corpid即为此appId）
+        /// <summary>设置来自WxPayConfig的必须参数
         /// </summary>
-        string AppId { get; }
-
-        /// <summary>微信支付分配的商户号
-        /// </summary>
-        string MchId { get; }
-
-        /// <summary>随机字符串
-        /// </summary>
-        string NonceStr { get; }
+        void SetNecessary(WxPayConfig config);
     }
 }

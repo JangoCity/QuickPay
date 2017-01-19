@@ -5,31 +5,36 @@
         public abstract string Url { get; }
 
         /**
-         * 参数来自Config
-         * 
+         * 参数来自WxPayConfig
          */
 
+        /// <summary>微信支付分配的公众账号ID（企业号corpid即为此appId）
+        /// </summary>
         [WxPayDataElement("appid")]
         public string AppId { get; protected set; }
 
+        /// <summary>微信支付分配的商户号
+        /// </summary>
         [WxPayDataElement("mch_id")]
         public string MchId { get; protected set; }
 
-        public void SetNecessary(string appId, string mchId)
-        {
-            AppId = appId;
-            MchId = mchId;
-        }
+        /// <summary>签名类型，默认为MD5，支持HMAC-SHA256和MD5
+        /// </summary>
+        [WxPayDataElement("sign_type")]
+        public string SignType { get; protected set; }
 
-        /**
-         * 必须参数
-         * 
-         */
+        /// <summary>
+        /// </summary>
+        public void SetNecessary(WxPayConfig config)
+        {
+            AppId = config.AppId;
+            MchId = config.MchId;
+            SignType = config.SignType;
+        }
 
         /// <summary>商户系统内部的订单号,32个字符内、可包含字母
         /// </summary>
         [WxPayDataElement("nonce_str")]
         public abstract string NonceStr { get; set; }
-
     }
 }

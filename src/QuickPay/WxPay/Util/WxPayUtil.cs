@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Reflection;
+using QuickPay.Common;
 
 namespace QuickPay.WxPay.Util
 {
@@ -27,6 +28,14 @@ namespace QuickPay.WxPay.Util
             return true;
         }
 
+        /// <summary>微信签名
+        /// </summary>
+        public static string Sign(WxPayData wxPayData, string key)
+        {
+            var url = wxPayData.ToUrl();
+            var stringSignTemp = $"{url}&key={key}";
+            return Md5Encryptor.GetMd5(stringSignTemp).ToUpper();
+        }
 
     }
 }

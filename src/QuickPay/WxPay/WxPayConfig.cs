@@ -12,6 +12,10 @@
         /// </summary>
         public string MchId { get; set; }
 
+        /// <summary>加密的Key
+        /// </summary>
+        public string Key { get; set; }
+
         /// <summary>密码
         /// </summary>
         public string Appsecret { get; set; }
@@ -30,14 +34,11 @@
 
         /// <summary>签名类型
         /// </summary>
-        public string SignType { get; set; } = "MD5";
+        public string SignType { get; set; } = WxPayConsts.SignType.Md5;
 
         /// <summary>SSL证书
         /// </summary>
         public string SslPassword { get; set; }
-
-        /// <summary>获取AccessToken的Url地址
-        /// </summary>
-        public string AccessTokenUrl { get; set; } = "https://api.weixin.qq.com/sns/oauth2/access_token";
+ 
     }
 }

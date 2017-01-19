@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using QuickPay.Common;
-using QuickPay.WxPay.Util;
+﻿using System.Threading.Tasks;
+using QuickPay.WxPay.Extensions;
+using QuickPay.WxPay.Request;
+using QuickPay.WxPay.Response;
 
 namespace QuickPay.WxPay
 {
@@ -28,32 +26,42 @@ namespace QuickPay.WxPay
         /// </summary>
         private void SetNecessary<T>(IWxPayRequest<T> request) where T : WxPayResponse
         {
-
+            request.SetNecessary(_config);
         }
 
 
 
-
-        /// <summary>根据Code获取OpenId
+        /// <summary>获取Code的url
         /// </summary>
-        public async Task<string> GetOpenidFromCode(string code)
+        public async Task<GetCodeResponse> GetCodeUrl(GetCodeRequest request)
         {
+            //设置必须参数
+            request.SetNecessary(_config);
+            var data = request.ToWxPayData();
+            var url = $"{request.Url}?{data.ToUrl()}";
+            return await Task.FromResult(new GetCodeResponse(url));
+        }
+
+        /// <summary>根据Code获取AccessToken
+        /// </summary>
+        public async Task<GetAccessTokenResponse> GetAccessTokenFromCode(GetAccessTokenRequest request)
+        {
+            //设置必须参数
+            request.SetNecessary(_config);
             //构造获取openid及access_token的url
-            WxPayData data = new WxPayData();
-            data.SetValue("appid", _config.AppId);
-            data.SetValue("secret", _config.Appsecret);
-            data.SetValue("code", code);
-            data.SetValue("grant_type", "authorization_code");
-            var url = $"{_config.AccessTokenUrl}?{data.ToUrl()}";
-            var result = await WxPayHttpService.Get(url);
-            var resultDict = JsonSerializer.Deserialize<Dictionary<string, object>>(result);
-            object o;
-            resultDict.TryGetValue("openid", out o);
-            if (o == null)
-            {
-                throw new WxPayException($"未返回有效的openid");
-            }
-            return o.ToString();
+            var data = request.ToWxPayData();
+            var url = $"{request.Url}?{data.ToUrl()}{WxPayConsts.WechatRedirect}";
+
+            //var result = await HttpService.Get(url);
+            //var resultDict = JsonSerializer.Deserialize<Dictionary<string, object>>(result);
+            //object o;
+            //resultDict.TryGetValue("openid", out o);
+            //if (o == null)
+            //{
+            //    throw new WxPayException($"未返回有效的openid");
+            //}
+            //return o.ToString();
+            return await Task.FromResult(new GetAccessTokenResponse());
         }
     }
 }

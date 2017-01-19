@@ -104,7 +104,7 @@ namespace QuickPay.WxPay
                 {
                     throw new WxPayException("WxPayData内部含有值为null的字段!");
                 }
-                if (pair.Key != "sign" && pair.Value.ToString() != "")
+                if (pair.Key != "sign" && !string.IsNullOrWhiteSpace(pair.Value.ToString()))
                 {
                     sb.Append($"{pair.Key}={pair.Value}&");
                 }
