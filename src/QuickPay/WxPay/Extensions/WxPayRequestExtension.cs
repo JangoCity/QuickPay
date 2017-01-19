@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using QuickPay.Common;
 
 namespace QuickPay.WxPay.Extensions
 {
@@ -25,6 +26,36 @@ namespace QuickPay.WxPay.Extensions
                 }
             }
             return payData;
+        }
+
+        /// <summary>将WxPayData转换为Json,主要取出里面的集合,生成Json
+        /// </summary>
+        public static string ToJson(this WxPayData wxPayData)
+        {
+            return JsonSerializer.Serialize(wxPayData.GetValues());
+        }
+
+        /// <summary>将WxPayData转换成Response
+        /// </summary>
+        public static WxPayResponse ToResponse<T>(WxPayData wxPayData) where T : WxPayResponse
+        {
+            var t = System.Activator.CreateInstance(typeof(T));
+            //获取全部属性
+            var properties = t.GetType().GetTypeInfo().GetProperties(BindingFlags.CreateInstance | BindingFlags.Public);
+            foreach (var property in properties)
+            {
+                var attribute = property.GetCustomAttribute<WxPayDataElementAttribute>();
+                if (attribute != null)
+                {
+                    //得到WxPayData中该Key的值
+                    var value = wxPayData.GetValue(attribute.Name);
+                    if (value != null)
+                    {
+                        property.SetValue(t, value);
+                    }
+                }
+            }
+            return t as T;
         }
     }
 }

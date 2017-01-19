@@ -39,11 +39,6 @@ namespace QuickPay.WxPay.Request
         [WxPayDataElement("trade_type")]
         public string TradeType { get; set; }
 
-        /// <summary>商户系统内部的订单号,32个字符内、可包含字母
-        /// </summary>
-        [WxPayDataElement("nonce_str")]
-        public override string NonceStr { get; set; }
-
         /********************非必须参数********************/
         /// <summary>自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"
         /// </summary>

@@ -25,7 +25,7 @@
 
         /// <summary>
         /// </summary>
-        public void SetNecessary(WxPayConfig config)
+        public virtual void SetNecessary(WxPayConfig config)
         {
             AppId = config.AppId;
             MchId = config.MchId;
@@ -35,6 +35,6 @@
         /// <summary>商户系统内部的订单号,32个字符内、可包含字母
         /// </summary>
         [WxPayDataElement("nonce_str")]
-        public abstract string NonceStr { get; set; }
+        public string NonceStr { get; set; }
     }
 }

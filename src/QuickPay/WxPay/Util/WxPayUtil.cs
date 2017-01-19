@@ -12,7 +12,8 @@ namespace QuickPay.WxPay.Util
         {
             //获取属性中名称不为Sign的
             var properties = request.GetType().GetTypeInfo()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(x => x.Name != WxPayConsts.Sign);
+                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                .Where(x => x.Name != WxPayConsts.SignField.Sign);
             //获取需要进行验证的参数
             var requireds = properties.Where(x => x.GetCustomAttribute<WxPayDataElementAttribute>().IsRequired);
             foreach (var property in requireds)
