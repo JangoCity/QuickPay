@@ -1,4 +1,5 @@
-﻿using QuickPay.WxPay.Response;
+﻿using Newtonsoft.Json.Linq;
+using QuickPay.WxPay.Response;
 namespace QuickPay.WxPay.Request
 {
     /// <summary>UnifiedOrderResponse,统一下单
@@ -38,6 +39,22 @@ namespace QuickPay.WxPay.Request
         /// </summary>
         [WxPayDataElement("trade_type")]
         public string TradeType { get; set; }
+
+        public UnifiedOrderRequest()
+        {
+            
+        }
+
+        public UnifiedOrderRequest(string outTradeNo, int totalFee, string body, string nonceStr, string spbillCreateIp,
+            string tradeType)
+        {
+            OutTradeNo = outTradeNo;
+            TotalFee = totalFee;
+            Body = body;
+            NonceStr = nonceStr;
+            SpbillCreateIp = spbillCreateIp;
+            TradeType = tradeType;
+        }
 
         /********************非必须参数********************/
         /// <summary>自定义参数，可以为终端设备号(门店号或收银设备ID)，PC网页或公众号内支付可以传"WEB"

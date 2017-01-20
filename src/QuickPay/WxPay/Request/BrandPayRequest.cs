@@ -3,6 +3,8 @@ using QuickPay.WxPay.Response;
 
 namespace QuickPay.WxPay.Request
 {
+    /// <summary>JsApi调起支付请求
+    /// </summary>
     public class BrandPayRequest : IWxPayRequest<BrandPayResponse>
     {
         [JsonIgnore]
