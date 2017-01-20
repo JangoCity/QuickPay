@@ -13,7 +13,7 @@ namespace QuickPay.Alipay.Extensions
             var alipayData=new AlipayData();
             //查询出实体中包含WxPayDataElementAttribute标签的属性
             var properties =
-                bizContent.GetType().GetTypeInfo().GetProperties(BindingFlags.CreateInstance | BindingFlags.Public);
+                bizContent.GetType().GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var property in properties)
             {
                 //获取该属性的Attribute

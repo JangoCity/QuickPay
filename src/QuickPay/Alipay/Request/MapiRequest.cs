@@ -7,7 +7,7 @@
         /// <summary>接口名称,不可空,
         /// </summary>
         [AlipayDataElement("service")]
-        public abstract string Service { get; set; }
+        public abstract string Service { get; }
 
         /// <summary>签约的支付宝账号对应的支付宝唯一用户号。以2088开头的16位纯数字组成。
         /// </summary>
@@ -24,13 +24,9 @@
         [AlipayDataElement("sign_type")]
         public string SignType { get; set; }
 
-        /// <summary>通知地址
-        /// </summary>
-        public string NotifyUrl { get; set; }
-
         /// <summary>设置请求的必须参数
         /// </summary>
-        public void SetNecessary(AlipayConfig config)
+        public virtual void SetNecessary(AlipayConfig config)
         {
             Partner = config.Pid;
             Charset = config.MCharset;

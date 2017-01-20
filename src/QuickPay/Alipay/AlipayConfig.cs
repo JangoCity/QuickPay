@@ -35,6 +35,14 @@
         /// </summary>
         public string SellerId { get; set; }
 
+        /// <summary>卖家支付宝账号
+        /// </summary>
+        public string SellerEmail { get; set; }
+
+        /// <summary>卖家支付宝账号别名
+        /// </summary>
+        public string SellerAccountName { get; set; }
+
         /// <summary>合作伙伴身份（PID），以2088开头的16位纯数字(旧版的支付宝接口会使用)
         /// </summary>
         public string Pid { get; set; }

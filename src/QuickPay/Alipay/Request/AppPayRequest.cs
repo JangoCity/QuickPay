@@ -2,16 +2,23 @@
 
 namespace QuickPay.Alipay.Request
 {
-    /// <summary>App支付下单
+    /// <summary>alipay.trade.app.pay,App支付下单
     /// </summary>
-    public class AppPayRequest:BaseRequest<AppPayResponse>
+    public class AppPayRequest : BaseRequest<AppPayResponse>
     {
+        public override string Method { get; set; } = AlipayConsts.AlipayMethod.AppPay;
+
+        /// <summary>回调通知地址
+        /// </summary>
+        [AlipayDataElement("notify_url")]
+        public string NotifyUrl { get; set; }
+
         public AppPayRequest()
         {
-            
+
         }
 
-        public AppPayRequest(string notifyUrl, AppPayBizContent bizContent)
+        public AppPayRequest(AppPayBizContent bizContent,string notifyUrl)
         {
             NotifyUrl = notifyUrl;
             BizContent = bizContent;

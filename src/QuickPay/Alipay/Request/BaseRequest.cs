@@ -40,17 +40,13 @@
         /// <summary>接口名称,alipay.trade.wap.pay
         /// </summary>
         [AlipayDataElement("method")]
-        public string Method { get; set; }
+        public abstract string Method { get; set; }
 
         /// <summary>发送请求的时间，格式"yyyy-MM-dd HH:mm:ss"
         /// </summary>
         [AlipayDataElement("timestamp")]
         public string Timestamp { get; set; }
 
-        /// <summary>回调通知地址
-        /// </summary>
-        [AlipayDataElement("notify_url")]
-        public string NotifyUrl { get; set; }
 
         /// <summary>业务请求参数的集合
         /// </summary>

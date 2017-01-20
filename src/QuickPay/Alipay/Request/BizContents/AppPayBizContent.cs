@@ -1,7 +1,7 @@
 ﻿ // ReSharper disable once CheckNamespace
 namespace QuickPay.Alipay.Request
 {
-    /// <summary>支付宝App支付业务参数
+    /// <summary>alipay.trade.app.pay,支付宝App支付业务参数
     /// </summary>
     public class AppPayBizContent : BizContent
     {

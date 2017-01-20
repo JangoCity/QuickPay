@@ -11,7 +11,7 @@ namespace QuickPay.WxPay.Extensions
         {
             var payData = new WxPayData();
             //查询出实体中包含WxPayDataElementAttribute标签的属性
-            var properties = request.GetType().GetTypeInfo().GetProperties(BindingFlags.CreateInstance | BindingFlags.Public);
+            var properties = request.GetType().GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var property in properties)
             {
                 //获取该属性的Attribute
@@ -41,7 +41,7 @@ namespace QuickPay.WxPay.Extensions
         {
             var t = System.Activator.CreateInstance(typeof(T));
             //获取全部属性
-            var properties = t.GetType().GetTypeInfo().GetProperties(BindingFlags.CreateInstance | BindingFlags.Public);
+            var properties = t.GetType().GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var property in properties)
             {
                 var attribute = property.GetCustomAttribute<WxPayDataElementAttribute>();

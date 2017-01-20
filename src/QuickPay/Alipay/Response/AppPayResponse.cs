@@ -1,6 +1,6 @@
 ﻿namespace QuickPay.Alipay.Response
 {
-    /// <summary>App下单返回
+    /// <summary>alipay.trade.app.pay,App下单返回
     /// </summary>
     public class AppPayResponse : BaseResponse
     {
