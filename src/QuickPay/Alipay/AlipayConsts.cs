@@ -104,7 +104,13 @@
             /// </summary>
             public const string DirectPay = "create_direct_pay_by_user";
 
+            /// <summary>即时到账有密退款接口
+            /// </summary>
+            public const string RefundFastpay = "refund_fastpay_by_platform_pwd";
 
+            /// <summary>批量付款到支付宝账户有密接口
+            /// </summary>
+            public const string BatchTrans = "batch_trans_notify";
         }
 
         public class DefaultPaymethod
@@ -116,6 +122,18 @@
             /// <summary>余额支付
             /// </summary>
             public const string DirectPay = "directPay";
+
+            /// <summary>银行支付
+            /// </summary>
+            public const string BankPay = "bankPay";
+
+            /// <summary>
+            /// </summary>
+            public const string Cartoon = "cartoon";
+
+            /// <summary>现金
+            /// </summary>
+            public const string Cash = "cash";
         }
     }
 }
