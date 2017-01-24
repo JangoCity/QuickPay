@@ -3,14 +3,9 @@ using QuickPay.WxPay.Response;
 
 namespace QuickPay.WxPay.Request
 {
-    public class GetCodeRequest : IWxPayRequest<GetCodeResponse>
+    public class GetCodeRequest : BaseRequest<GetCodeResponse>
     {
-        public string Url { get; } = "https://open.weixin.qq.com/connect/oauth2/authorize";
-
-        /// <summary>公众号的唯一标识
-        /// </summary>
-        [WxPayDataElement("appid")]
-        public string AppId { get; set; }
+        public override string Url { get; } = "https://open.weixin.qq.com/connect/oauth2/authorize";
 
         /// <summary>授权后重定向的回调链接地址，请使用urlencode对链接进行处理
         /// </summary>
@@ -42,11 +37,7 @@ namespace QuickPay.WxPay.Request
 
         public GetCodeRequest()
         {
-            
-        }
-        public void SetNecessary(WxPayConfig config)
-        {
-            AppId = config.AppId;
+
         }
     }
 }

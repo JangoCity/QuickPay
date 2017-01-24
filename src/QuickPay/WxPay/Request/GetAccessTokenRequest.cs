@@ -4,14 +4,9 @@ namespace QuickPay.WxPay.Request
 {
     /// <summary>根据Code获取AccessToken
     /// </summary>
-    public class GetAccessTokenRequest : IWxPayRequest<GetAccessTokenResponse>
+    public class GetAccessTokenRequest : BaseRequest<GetAccessTokenResponse>
     {
-        public string Url { get; } = "https://api.weixin.qq.com/sns/oauth2/access_token";
-
-        /// <summary>公众号的唯一标识
-        /// </summary>
-        [WxPayDataElement("appid")]
-        public string AppId { get; set; }
+        public override string Url { get; } = "https://api.weixin.qq.com/sns/oauth2/access_token";
 
         /// <summary>公众号的appsecret
         /// </summary>
@@ -41,9 +36,9 @@ namespace QuickPay.WxPay.Request
 
         /// <summary>设置必须的参数
         /// </summary>
-        public void SetNecessary(WxPayConfig config)
+        public override void SetNecessary(WxPayConfig config)
         {
-            AppId = config.AppId;
+            base.SetNecessary(config);
             AppSecret = config.Appsecret;
         }
     }

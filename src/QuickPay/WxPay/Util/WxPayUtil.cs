@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Reflection;
 using QuickPay.Common;
 
@@ -38,5 +39,19 @@ namespace QuickPay.WxPay.Util
             return Md5Encryptor.GetMd5(stringSignTemp).ToUpper();
         }
 
+        /// <summary>生成时间戳，标准北京时间，时区为东八区，自1970年1月1日 0点0分0秒以来的秒数
+        /// </summary>
+        public static string GenerateTimeStamp()
+        {
+            TimeSpan ts = DateTime.UtcNow - new DateTime(1970, 1, 1, 0, 0, 0, 0);
+            return Convert.ToInt64(ts.TotalSeconds).ToString();
+        }
+
+        /// <summary>生成随机串，随机串包含字母或数字
+        /// </summary>
+        public static string GenerateNonceStr()
+        {
+            return Guid.NewGuid().ToString().Replace("-", "");
+        }
     }
 }

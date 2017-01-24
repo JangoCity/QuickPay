@@ -1,19 +1,13 @@
-﻿using Newtonsoft.Json;
-using QuickPay.WxPay.Response;
+﻿using QuickPay.WxPay.Response;
+using QuickPay.WxPay.Util;
 
 namespace QuickPay.WxPay.Request
 {
     /// <summary>JsApi调起支付请求
     /// </summary>
-    public class BrandPayRequest : IWxPayRequest<BrandPayResponse>
+    public class JsApiUnifiedOrderCallRequest : BaseRequest<JsApiUnifiedOrderCallResponse>
     {
-        [JsonIgnore]
-        public string Url { get; } = "";
-
-        /// <summary>商户注册具有支付权限的公众号成功后即可获得
-        /// </summary>
-        [WxPayDataElement("appid")]
-        public string AppId { get; set; }
+        public override string Url { get; } = "";
 
         /// <summary>当前的时间，其他详见时间戳规则
         /// </summary>
@@ -34,14 +28,21 @@ namespace QuickPay.WxPay.Request
         /// </summary>
         public string PrepayId { get; set; }
 
-        /// <summary>签名算法，暂支持MD5
-        /// </summary>
-        [WxPayDataElement("signType")]
-        public string SignType { get; set; } = WxPayConsts.SignType.Md5;
-
-        public void SetNecessary(WxPayConfig config)
+        public override void SetNecessary(WxPayConfig config)
         {
-            AppId = config.AppId;
+            base.SetNecessary(config);
+            NonceStr = WxPayUtil.GenerateNonceStr();
+            TimeStamp = WxPayUtil.GenerateTimeStamp();
+        }
+
+        public JsApiUnifiedOrderCallRequest()
+        {
+
+        }
+
+        public JsApiUnifiedOrderCallRequest(string prepayId)
+        {
+            PrepayId = prepayId;
         }
     }
 }

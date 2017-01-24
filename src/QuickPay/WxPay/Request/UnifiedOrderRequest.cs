@@ -1,10 +1,9 @@
-﻿using Newtonsoft.Json.Linq;
-using QuickPay.WxPay.Response;
+﻿using QuickPay.WxPay.Response;
 namespace QuickPay.WxPay.Request
 {
     /// <summary>UnifiedOrderResponse,统一下单
     /// </summary>
-    public class UnifiedOrderRequest : BaseRequest<UnifiedOrderResponse>
+    public class UnifiedOrderRequest : TradeRequest<UnifiedOrderResponse>
     {
         /// <summary>统一下单接口地址
         /// </summary>
@@ -45,15 +44,22 @@ namespace QuickPay.WxPay.Request
             
         }
 
-        public UnifiedOrderRequest(string outTradeNo, int totalFee, string body, string nonceStr, string spbillCreateIp,
+        public UnifiedOrderRequest(string outTradeNo, int totalFee, string body, string spbillCreateIp,
             string tradeType)
         {
             OutTradeNo = outTradeNo;
             TotalFee = totalFee;
             Body = body;
-            NonceStr = nonceStr;
             SpbillCreateIp = spbillCreateIp;
             TradeType = tradeType;
+        }
+
+        /// <summary>JSAPI支付的时候需要OpenId
+        /// </summary>
+        public UnifiedOrderRequest(string outTradeNo, int totalFee, string body, string spbillCreateIp,
+            string tradeType, string openId) : this(outTradeNo, totalFee, body, spbillCreateIp, tradeType)
+        {
+            OpenId = openId;
         }
 
         /********************非必须参数********************/

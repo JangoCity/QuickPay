@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using QuickPay.WxPay.Response;
+﻿using QuickPay.WxPay.Response;
 
 namespace QuickPay.WxPay.Request
 {
     /// <summary>查询退款请求
     /// </summary>
-    public class RefundQueryRequest : BaseRequest<RefundQueryResponse>
+    public class RefundQueryRequest : TradeRequest<RefundQueryResponse>
     {
         /// <summary>查询退款api地址
         /// </summary>
@@ -39,10 +35,9 @@ namespace QuickPay.WxPay.Request
             
         }
 
-        public RefundQueryRequest(string outRefundNo, string nonceStr)
+        public RefundQueryRequest(string outRefundNo)
         {
             OutRefundNo = outRefundNo;
-            NonceStr = nonceStr;
         }
     }
 }

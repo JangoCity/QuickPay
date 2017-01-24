@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using QuickPay.Common;
 using QuickPay.Common.Requests;
 using QuickPay.WxPay.Extensions;
@@ -13,10 +14,12 @@ namespace QuickPay.WxPay
         private readonly WxPayConfig _config;
 
         #region ctor
+
         public WxPayClient(WxPayConfig config)
         {
             _config = config;
         }
+
         #endregion
 
         /// <summary>异步执行请求
@@ -38,7 +41,7 @@ namespace QuickPay.WxPay
             //签名
             var sign = WxPayUtil.Sign(wxPayData, _config.Key);
             wxPayData.SetValue(signField, sign);
-            var json = JsonSerializer.Serialize(wxPayData);
+            var json = wxPayData.ToJson();
             return await Task.FromResult(json);
         }
 
@@ -76,6 +79,14 @@ namespace QuickPay.WxPay
             }
             var accessToken = JsonSerializer.Deserialize<GetAccessTokenResponse>(response.GetResponseString());
             return await Task.FromResult(accessToken);
+        }
+
+        /// <summary>根据当前系统时间加随机序列来生成订单号
+        /// </summary>
+        public string GenerateOutTradeNo()
+        {
+            var ran = new Random();
+            return $"{_config.MchId}{DateTime.Now:yyyyMMddHHmmss}{ran.Next(999)}";
         }
     }
 }

@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using QuickPay.WxPay.Response;
+﻿using QuickPay.WxPay.Response;
 
 namespace QuickPay.WxPay.Request
 {
     /// <summary>下载账单请求
     /// </summary>
-    public class DownloadBillRequest : BaseRequest<DownloadBillResponse>
+    public class DownloadBillRequest : TradeRequest<DownloadBillResponse>
     {
         public override string Url { get; } = "https://api.mch.weixin.qq.com/pay/downloadbill";
 
@@ -22,9 +18,25 @@ namespace QuickPay.WxPay.Request
         [WxPayDataElement("bill_type")]
         public string BillType { get; set; }
 
+        public DownloadBillRequest()
+        {
+            
+        }
+
+        public DownloadBillRequest(string billDate, string billType)
+        {
+            BillDate = billDate;
+            BillType = billType;
+        }
+
+        /********************非必须参数*****************/
+
         /// <summary>压缩账单,非必传参数，固定值：GZIP，返回格式为.gzip的压缩包账单。不传则默认为数据流形式。
         /// </summary>
-        [WxPayDataElement("tar_type")]
+        [WxPayDataElement("tar_type", false)]
         public string TarType { get; set; }
+
+        [WxPayDataElement("device_info", false)]
+        public string DeviceInfo { get; set; }
     }
 }

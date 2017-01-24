@@ -13,7 +13,7 @@ namespace QuickPay.WxPay
 
         /// <summary>生成页面执行参数
         /// </summary>
-        Task<string> PageExecuteAsync<T>(IWxPayRequest<T> request, string signField=WxPayConsts.SignField.PaySign)
+        Task<string> PageExecuteAsync<T>(IWxPayRequest<T> request, string signField = WxPayConsts.SignField.PaySign)
             where T : WxPayResponse;
 
         /// <summary>获取Code的url
@@ -23,5 +23,10 @@ namespace QuickPay.WxPay
         /// <summary>根据Code获取AccessToken
         /// </summary>
         Task<GetAccessTokenResponse> GetAccessTokenFromCode(GetAccessTokenRequest request);
+
+        /// <summary>根据当前系统时间加随机序列来生成订单号
+        /// </summary>
+        string GenerateOutTradeNo();
+
     }
 }

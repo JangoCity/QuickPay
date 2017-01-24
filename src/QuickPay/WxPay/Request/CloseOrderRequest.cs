@@ -4,7 +4,7 @@ namespace QuickPay.WxPay.Request
 {
     /// <summary>关闭订单请求
     /// </summary>
-    public class CloseOrderRequest : BaseRequest<CloseOrderResponse>
+    public class CloseOrderRequest : TradeRequest<CloseOrderResponse>
     {
         /// <summary>关闭订单地址
         /// </summary>
@@ -20,10 +20,9 @@ namespace QuickPay.WxPay.Request
             
         }
 
-        public CloseOrderRequest(string outTradeNo, string nonceStr)
+        public CloseOrderRequest(string outTradeNo)
         {
             OutTradeNo = outTradeNo;
-            NonceStr = nonceStr;
         }
 
     }

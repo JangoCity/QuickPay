@@ -4,7 +4,7 @@ namespace QuickPay.WxPay.Request
 {
     /// <summary>退款,一笔订单可能有多次退款,每次退款都需要唯一的编号
     /// </summary>
-    public class RefundRequest : BaseRequest<RefundResponse>
+    public class RefundRequest : TradeRequest<RefundResponse>
     {
         /// <summary>退款地址
         /// </summary>
@@ -68,12 +68,12 @@ namespace QuickPay.WxPay.Request
 
         /// <summary>货币类型，符合ISO 4217标准的三位字母代码，默认人民币：CNY
         /// </summary>
-        [WxPayDataElement("refund_fee_type")]
+        [WxPayDataElement("refund_fee_type",false)]
         public string RefundFeeType { get; set; } = WxPayConsts.FeeType.Cny;
 
         /// <summary>仅针对老资金流商户使用 REFUND_SOURCE_UNSETTLED_FUNDS---未结算资金退款（默认使用未结算资金退款）REFUND_SOURCE_RECHARGE_FUNDS---可用余额退款
         /// </summary>
-        [WxPayDataElement("refund_account")]
+        [WxPayDataElement("refund_account",false)]
         public string RefundAccount { get; set; } = WxPayConsts.RefundAccount.Unsettled;
     }
 }

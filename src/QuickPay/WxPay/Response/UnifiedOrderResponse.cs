@@ -2,7 +2,7 @@
 {
     /// <summary>UnifiedOrderRequest,统一下单返回结果
     /// </summary>
-    public class UnifiedOrderResponse : BaseResponse
+    public class UnifiedOrderResponse : TradeResponse
     {
         /********************以下字段在return_code为SUCCESS的时候有返回********************/
 

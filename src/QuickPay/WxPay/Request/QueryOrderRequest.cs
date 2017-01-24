@@ -4,7 +4,7 @@ namespace QuickPay.WxPay.Request
 {
     /// <summary>查询订单请求
     /// </summary>
-    public class QueryOrderRequest : BaseRequest<QueryOrderResponse>
+    public class QueryOrderRequest : TradeRequest<QueryOrderResponse>
     {
         /// <summary>请求地址
         /// </summary>
@@ -22,13 +22,12 @@ namespace QuickPay.WxPay.Request
 
         public QueryOrderRequest()
         {
-            
+
         }
 
-        public QueryOrderRequest(string outTradeNo, string nonceStr)
+        public QueryOrderRequest(string outTradeNo)
         {
             OutTradeNo = outTradeNo;
-            NonceStr = nonceStr;
         }
     }
 }
