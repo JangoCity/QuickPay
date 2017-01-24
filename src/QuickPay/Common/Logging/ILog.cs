@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QuickPay.Alipay.Util
+namespace QuickPay.Common.Logging
 {
-    public class WebUtil
+    public interface ILog
     {
+        
     }
 }

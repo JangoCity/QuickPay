@@ -5231,6 +5231,8 @@
     ],
     ".NETFramework,Version=v4.5": [
       "System.Configuration >= 4.0.0",
+      "System.Net.Http >= 4.0.0",
+      "System.Net.Http.WebRequest >= 4.0.0",
       "System.Web >= 4.0.0",
       "System.Xml >= 4.0.0"
     ],
@@ -5239,6 +5241,7 @@
       "System.Collections.NonGeneric >= 4.3.0",
       "System.Collections.Specialized >= 4.3.0",
       "System.ComponentModel.TypeConverter >= 4.3.0",
+      "System.Net.Http >= 4.3.0",
       "System.Net.Requests >= 4.3.0",
       "System.Runtime.Serialization.Formatters >= 4.3.0",
       "System.Xml.XmlDocument >= 4.3.0"

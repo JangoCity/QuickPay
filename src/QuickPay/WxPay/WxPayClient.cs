@@ -1,5 +1,6 @@
 ﻿using System.Threading.Tasks;
 using QuickPay.Common;
+using QuickPay.Common.Requests;
 using QuickPay.WxPay.Extensions;
 using QuickPay.WxPay.Request;
 using QuickPay.WxPay.Response;
@@ -68,8 +69,12 @@ namespace QuickPay.WxPay
             //构造获取openid及access_token的url
             var data = request.ToWxPayData();
             var url = $"{request.Url}?{data.ToUrl()}{WxPayConsts.WechatRedirect}";
-            var json = await HttpService.Get(url);
-            var accessToken = JsonSerializer.Deserialize<GetAccessTokenResponse>(json);
+            var response = await HttpService.GetAsync(url);
+            if (!response.Success)
+            {
+                throw new QuickPayException(response.ExceptionMessage);
+            }
+            var accessToken = JsonSerializer.Deserialize<GetAccessTokenResponse>(response.GetResponseString());
             return await Task.FromResult(accessToken);
         }
     }

@@ -2721,6 +2721,7 @@
           "System.Collections.NonGeneric": "4.3.0",
           "System.Collections.Specialized": "4.3.0",
           "System.ComponentModel.TypeConverter": "4.3.0",
+          "System.Net.Http": "4.3.0",
           "System.Net.Requests": "4.3.0",
           "System.Runtime.Serialization.Formatters": "4.3.0",
           "System.Xml.XmlDocument": "4.3.0"
@@ -2890,7 +2891,7 @@
       ]
     },
     "Microsoft.DiaSymReader/1.0.8": {
-      "sha512": "HAhTmRgU+nnDVYxMZFAS1iwqg6CudbsSMZfSY9UJj4AJO4L69xZCtTOPKC5rW8+egNBWjDb0iBZV4ZdNI6dZnA==",
+      "sha512": "ABLULVhCAiyBFLBT5xX6vB4NhZDgwUylGRQK+zW5nZn2rbh1f8LOnFZ9gVSxzL6qOzPNb32Nu3QZ43iZerHOxA==",
       "type": "package",
       "path": "Microsoft.DiaSymReader/1.0.8",
       "files": [
