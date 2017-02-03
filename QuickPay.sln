@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{92BF6CAC-9
 EndProject
 Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QuickPayTest", "test\QuickPayTest\QuickPayTest.xproj", "{B50E6039-62C1-438D-90EB-9223B5E005DA}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "QuickPayConsoleTest", "test\QuickPayConsoleTest\QuickPayConsoleTest.xproj", "{7275A9A2-082B-4CE5-AC88-3594B4994733}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,6 +32,10 @@ Global
 		{B50E6039-62C1-438D-90EB-9223B5E005DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B50E6039-62C1-438D-90EB-9223B5E005DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B50E6039-62C1-438D-90EB-9223B5E005DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7275A9A2-082B-4CE5-AC88-3594B4994733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7275A9A2-082B-4CE5-AC88-3594B4994733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7275A9A2-082B-4CE5-AC88-3594B4994733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7275A9A2-082B-4CE5-AC88-3594B4994733}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -37,5 +43,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{CA6A4CA0-2C39-42CE-AD98-B386BAB084F7} = {500D65FF-1987-4295-8CB8-E36E671395EF}
 		{B50E6039-62C1-438D-90EB-9223B5E005DA} = {92BF6CAC-9193-4BF3-90A3-397158F6A361}
+		{7275A9A2-082B-4CE5-AC88-3594B4994733} = {92BF6CAC-9193-4BF3-90A3-397158F6A361}
 	EndGlobalSection
 EndGlobal
