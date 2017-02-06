@@ -1,5 +1,5 @@
-﻿using System.Reflection;
-using QuickPay.Common;
+﻿using QuickPay.Common;
+using QuickPay.WxPay.Util;
 
 namespace QuickPay.WxPay.Extensions
 {
@@ -9,23 +9,7 @@ namespace QuickPay.WxPay.Extensions
         /// </summary>
         public static WxPayData ToWxPayData<T>(this IWxPayRequest<T> request) where T : WxPayResponse
         {
-            var payData = new WxPayData();
-            //查询出实体中包含WxPayDataElementAttribute标签的属性
-            var properties = request.GetType().GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var property in properties)
-            {
-                //获取该属性的Attribute
-                var attribute = property.GetCustomAttribute<WxPayDataElementAttribute>();
-                if (attribute != null)
-                {
-                    var value = property.GetValue(request);
-                    if (value != null)
-                    {
-                        payData.SetValue(attribute.Name, value);
-                    }
-                }
-            }
-            return payData;
+            return WxPayReflectUtil.ToWxPayData(request);
         }
 
         /// <summary>将WxPayData转换为Json,主要取出里面的集合,生成Json
@@ -37,25 +21,9 @@ namespace QuickPay.WxPay.Extensions
 
         /// <summary>将WxPayData转换成Response
         /// </summary>
-        public static WxPayResponse ToResponse<T>(WxPayData wxPayData) where T : WxPayResponse
+        public static IWxPay ToWxPay<T>(WxPayData wxPayData) where T : IWxPay
         {
-            var t = System.Activator.CreateInstance(typeof(T));
-            //获取全部属性
-            var properties = t.GetType().GetTypeInfo().GetProperties(BindingFlags.Instance | BindingFlags.Public);
-            foreach (var property in properties)
-            {
-                var attribute = property.GetCustomAttribute<WxPayDataElementAttribute>();
-                if (attribute != null)
-                {
-                    //得到WxPayData中该Key的值
-                    var value = wxPayData.GetValue(attribute.Name);
-                    if (value != null)
-                    {
-                        property.SetValue(t, value);
-                    }
-                }
-            }
-            return t as T;
+            return WxPayReflectUtil.ToWxPay<T>(wxPayData);
         }
     }
 }
