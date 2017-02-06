@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Xml;
 
@@ -60,6 +61,8 @@ namespace QuickPay.WxPay
             return _values;
         }
 
+
+
         /// <summary>将数据转换为xml
         /// </summary>
         public string ToXml()
@@ -115,7 +118,45 @@ namespace QuickPay.WxPay
             }
             return sb.ToString();
         }
-        
 
+
+        /// <summary>对WxPayData进行签名
+        /// </summary>
+        public string MakeSign(string key)
+        {
+            //转url格式
+            string str = $"{ToUrl()}&key={key}";
+            //MD5加密
+            var md5 = MD5.Create();
+            var bs = md5.ComputeHash(Encoding.UTF8.GetBytes(str));
+            var sb = new StringBuilder();
+            foreach (byte b in bs)
+            {
+                sb.Append(b.ToString("x2"));
+            }
+            //所有字符转为大写
+            return sb.ToString().ToUpper();
+        }
+
+        /// <summary>签名验证
+        /// </summary>
+        public bool CheckSign(string key)
+        {
+            //如果没有设置签名，则跳过检测
+            if (!IsSet("sign") || GetValue("sign").ToString() == "")
+            {
+                throw new WxPayException("WxPayData签名不存在!");
+            }
+            //获取接收到的签名
+            string returnSign = GetValue("sign").ToString();
+            //在本地计算新的签名
+            string localSign = MakeSign(key);
+
+            if (localSign == returnSign)
+            {
+                return true;
+            }
+            return false;
+        }
     }
 }

@@ -2,7 +2,8 @@
 {
     /// <summary>
     /// </summary>
-    public abstract class AlipayResponse
+    public abstract class AlipayResponse : IAlipay
     {
+
     }
 }

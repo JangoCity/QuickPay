@@ -88,5 +88,12 @@ namespace QuickPay.WxPay
             var ran = new Random();
             return $"{_config.MchId}{DateTime.Now:yyyyMMddHHmmss}{ran.Next(999)}";
         }
+
+        /// <summary>获取加密的Key
+        /// </summary>
+        public string GetSignKey()
+        {
+            return _config.Key;
+        }
     }
 }

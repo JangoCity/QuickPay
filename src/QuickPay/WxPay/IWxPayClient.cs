@@ -28,5 +28,8 @@ namespace QuickPay.WxPay
         /// </summary>
         string GenerateOutTradeNo();
 
+        /// <summary>获取加密的Key
+        /// </summary>
+        string GetSignKey();
     }
 }

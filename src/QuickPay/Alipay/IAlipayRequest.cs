@@ -1,8 +1,13 @@
 ﻿namespace QuickPay.Alipay
 {
+    public interface IAlipay
+    {
+        
+    }
+
     /// <summary>支付支付请求
     /// </summary>
-    public interface IAlipayRequest<T> where T : AlipayResponse
+    public interface IAlipayRequest<T> : IAlipay where T : AlipayResponse
     {
         /// <summary>请求网关
         /// </summary>
