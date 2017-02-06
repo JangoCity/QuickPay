@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 using QuickPay.Common;
 
 namespace QuickPay.WxPay.Util
@@ -159,7 +157,19 @@ namespace QuickPay.WxPay.Util
             return func;
         }
 
-
+        /// <summary>将WxPayData转换成WxPayResponse
+        /// </summary>
+        public static T ToWxPayResponse<T>(WxPayData wxPayData) where T : WxPayResponse
+        {
+            Delegate method;
+            if (!WxPayDataToResponseDict.TryGetValue(typeof(T), out method))
+            {
+                method = GetWxPayResponse<T>();
+                WxPayDataToResponseDict.Add(typeof(T), method);
+            }
+            var func = method as Func<WxPayData, T>;
+            return func?.Invoke(wxPayData);
+        }
 
 
 

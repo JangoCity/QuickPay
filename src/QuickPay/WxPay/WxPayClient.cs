@@ -32,7 +32,7 @@ namespace QuickPay.WxPay
 
         /// <summary>生成页面执行参数
         /// </summary>
-        public async Task<string> PageExecuteAsync<T>(IWxPayRequest<T> request,
+        public async Task<string> ParamExecuteAsync<T>(IWxPayRequest<T> request,
             string signField = WxPayConsts.SignField.PaySign)
             where T : WxPayResponse
         {
