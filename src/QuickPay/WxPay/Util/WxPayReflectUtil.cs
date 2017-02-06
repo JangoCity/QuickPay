@@ -47,8 +47,6 @@ namespace QuickPay.WxPay.Util
             // 定义参数,传递进来的UserInfo
             var parameterExpr = Expression.Parameter(sourceType, "request");
             var bodyExprs = new List<Expression>();
-            var parameterExprs = new List<Expression>();
-            parameterExprs.Add(parameterExpr);
             //code:var wxPayData=new WxPayData();
             var wxPayDataExpr = Expression.Variable(targetType, "wxPayData");
             var newWxPayDataExpr = Expression.New(targetType);
