@@ -21,9 +21,9 @@ namespace QuickPay.WxPay.Extensions
 
         /// <summary>将WxPayData转换成Response
         /// </summary>
-        public static WxPayResponse ToResponse<T>(WxPayData wxPayData) where T : WxPayResponse
+        public static IWxPay ToWxPay<T>(WxPayData wxPayData) where T : IWxPay
         {
-            return WxPayReflectUtil.ToWxPayResponse<T>(wxPayData);
+            return WxPayReflectUtil.ToWxPay<T>(wxPayData);
         }
     }
 }

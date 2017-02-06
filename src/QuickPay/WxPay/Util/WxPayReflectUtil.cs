@@ -9,10 +9,10 @@ namespace QuickPay.WxPay.Util
 {
     public class WxPayReflectUtil
     {
-        private static readonly IDictionary<Type, Delegate> RequestToWxPayDataDict =
+        private static readonly IDictionary<Type, Delegate> WxPayToDataDict =
             new ConcurrentDictionary<Type, Delegate>();
 
-        private static readonly IDictionary<Type, Delegate> WxPayDataToResponseDict =
+        private static readonly IDictionary<Type, Delegate> DataToWxPayDict =
             new ConcurrentDictionary<Type, Delegate>();
 
         private static readonly IDictionary<Type, object> DefaultValueDict = new ConcurrentDictionary<Type, object>()
@@ -41,21 +41,21 @@ namespace QuickPay.WxPay.Util
 
         /// <summary>将微信请求转换为WxPayData
         /// </summary>
-        public static WxPayData ToWxPayData<T>(T request) where T : IWxPayRequest
+        public static WxPayData ToWxPayData<T>(T request) where T : IWxPay
         {
             Delegate method;
-            if (!RequestToWxPayDataDict.TryGetValue(typeof(T), out method))
+            if (!WxPayToDataDict.TryGetValue(typeof(T), out method))
             {
-                method = GetWxPayDataFunc<T>();
-                RequestToWxPayDataDict.Add(typeof(T), method);
+                method = GetDataFunc<T>();
+                WxPayToDataDict.Add(typeof(T), method);
             }
             var func = method as Func<T, WxPayData>;
             return func?.Invoke(request);
         }
 
-        /// <summary> 将IWxPayRequest转换为WxPayData的委托
+        /// <summary> 将IWxPay转换为WxPayData的委托
         /// </summary>
-        public static Func<T, WxPayData> GetWxPayDataFunc<T>() where T : IWxPayRequest
+        public static Func<T, WxPayData> GetDataFunc<T>() where T : IWxPay
         {
             //数据源类型,IWxPayRequest实现类或子类
             var sourceType = typeof(T);
@@ -110,9 +110,9 @@ namespace QuickPay.WxPay.Util
             return ConvertMethodNames[type];
         }
 
-        /// <summary>将WxPayData转换成Response的委托
+        /// <summary>将WxPayData转换成IWxPay的委托
         /// </summary>
-        public static Func<WxPayData, T> GetWxPayResponse<T>() where T : WxPayResponse
+        public static Func<WxPayData, T> GetWxPay<T>() where T : IWxPay
         {
             var sourceType = typeof(WxPayData);
             var targetType = typeof(T);
@@ -159,16 +159,20 @@ namespace QuickPay.WxPay.Util
 
         /// <summary>将WxPayData转换成WxPayResponse
         /// </summary>
-        public static T ToWxPayResponse<T>(WxPayData wxPayData) where T : WxPayResponse
+        public static T ToWxPay<T>(WxPayData wxPayData) where T : IWxPay
         {
             Delegate method;
-            if (!WxPayDataToResponseDict.TryGetValue(typeof(T), out method))
+            if (!DataToWxPayDict.TryGetValue(typeof(T), out method))
             {
-                method = GetWxPayResponse<T>();
-                WxPayDataToResponseDict.Add(typeof(T), method);
+                method = GetWxPay<T>();
+                DataToWxPayDict.Add(typeof(T), method);
             }
             var func = method as Func<WxPayData, T>;
-            return func?.Invoke(wxPayData);
+            if (func != null)
+            {
+                return func.Invoke(wxPayData);
+            }
+            return default(T);
         }
 
 

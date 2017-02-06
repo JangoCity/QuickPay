@@ -1,6 +1,6 @@
 ﻿namespace QuickPay.WxPay
 {
-    public abstract class WxPayResponse
+    public abstract class WxPayResponse:IWxPay
     {
         
     }

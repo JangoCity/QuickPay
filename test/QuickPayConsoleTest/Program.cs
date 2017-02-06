@@ -21,7 +21,7 @@ namespace QuickPayConsoleTest
             wxPayData.SetValue("return_code","SUCCESS");
             wxPayData.SetValue("result_msg", "OK");
             wxPayData.SetValue("appid","111");
-            var func = WxPayReflectUtil.GetWxPayResponse<QueryOrderResponse>();
+            var func = WxPayReflectUtil.GetWxPay<QueryOrderResponse>();
 
             var r = func(wxPayData);
             Console.WriteLine(r.AppId);

@@ -1,14 +1,12 @@
-﻿using QuickPay.Common;
-
-namespace QuickPay.WxPay
+﻿namespace QuickPay.WxPay
 {
 
-    public interface IWxPayRequest
+    public interface IWxPay
     {
 
     }
 
-    public interface IWxPayRequest<T> : IWxPayRequest where T : WxPayResponse
+    public interface IWxPayRequest<T> : IWxPay where T : WxPayResponse
     {
         /// <summary>当前Request请求的Url地址
         /// </summary>
