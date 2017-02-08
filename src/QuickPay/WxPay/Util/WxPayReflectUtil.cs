@@ -44,6 +44,7 @@ namespace QuickPay.WxPay.Util
         public static WxPayData ToWxPayData<T>(T wxPay) where T : IWxPay
         {
             Delegate method;
+
             if (!WxPayToDataDict.TryGetValue(typeof(T), out method))
             {
                 method = GetDataFunc<T>();

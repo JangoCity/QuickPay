@@ -25,5 +25,15 @@
         /// </summary>
         [WxPayDataElement("sign")]
         public string Sign { get; set; }
+
+        /// <summary>调用接口提交的交易类型，取值如下：JSAPI，NATIVE，APP
+        /// </summary>
+        [WxPayDataElement("trade_type")]
+        public string TradeType { get; set; }
+
+        /// <summary>微信生成的预支付回话标识，用于后续接口调用中使用，该值有效期为2小时
+        /// </summary>
+        [WxPayDataElement("prepay_id")]
+        public string PrepayId { get; set; }
     }
 }

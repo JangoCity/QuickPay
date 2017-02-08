@@ -1,10 +1,12 @@
-﻿using QuickPay.WxPay.Response;
+﻿using System;
+using QuickPay.WxPay.Response;
+using QuickPay.WxPay.Util;
 
 namespace QuickPay.WxPay.Request
 {
     /// <summary>App统一下单之后调起支付
     /// </summary>
-    public class AppUnifiedOrderCallRequest : BaseRequest<AppUnifiedOrderCallResponse>
+    public class AppUnifiedOrderCallRequest: BaseRequest<AppUnifiedOrderCallResponse>
     {
         public override string Url { get; } = "";
 
@@ -44,11 +46,11 @@ namespace QuickPay.WxPay.Request
             
         }
 
-        public AppUnifiedOrderCallRequest(string prepayId, string nonceStr, string timeStamp)
+        public AppUnifiedOrderCallRequest(string prepayId)
         {
             PrepayId = prepayId;
-            NonceStr = nonceStr;
-            TimeStamp = timeStamp;
+            TimeStamp = WxPayUtil.GenerateTimeStamp();
+            NonceStr = WxPayUtil.GenerateNonceStr();
         }
     }
 }

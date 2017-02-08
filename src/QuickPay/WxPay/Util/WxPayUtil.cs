@@ -53,11 +53,5 @@ namespace QuickPay.WxPay.Util
         {
             return Guid.NewGuid().ToString().Replace("-", "");
         }
-
-
-
-
-
-
     }
 }

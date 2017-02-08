@@ -24,10 +24,19 @@ namespace QuickPay.WxPay
 
         /// <summary>异步执行请求
         /// </summary>
-        public async Task<T> ExecuteAsync<T>(IWxPayRequest<T> request) where T : WxPayResponse
+        public async Task<T> ExecuteAsync<T>(IWxPayRequest<T> request)
+            where T : WxPayResponse
         {
             SetNecessary(request);
-            return await Task.FromResult(default(T));
+            var requestXml =WxPayReflectUtil.ToWxPayData(request).ToXml();
+            var response = await HttpService.PostAsync(request.Url, PostType.Xml, requestXml);
+            if (!response.Success)
+            {
+                throw new Exception(response.ExceptionMessage);
+            }
+            var responseXml = response.GetResponseString();
+            var wxPayData = new WxPayData(responseXml);
+            return WxPayReflectUtil.ToWxPay<T>(wxPayData);
         }
 
         /// <summary>生成页面执行参数
@@ -35,9 +44,11 @@ namespace QuickPay.WxPay
         public async Task<string> ParamExecuteAsync<T>(IWxPayRequest<T> request,
             string signField = WxPayConsts.SignField.PaySign)
             where T : WxPayResponse
+
         {
+            SetNecessary(request);
             //不包含签名,并且不包含null值
-            var wxPayData = request.ToWxPayData();
+            var wxPayData = WxPayReflectUtil.ToWxPayData(request);
             //签名
             var sign = WxPayUtil.Sign(wxPayData, _config.Key);
             wxPayData.SetValue(signField, sign);
@@ -58,7 +69,7 @@ namespace QuickPay.WxPay
         {
             //设置必须参数
             request.SetNecessary(_config);
-            var data = request.ToWxPayData();
+            var data = WxPayReflectUtil.ToWxPayData(request);
             var url = $"{request.Url}?{data.ToUrl()}";
             return await Task.FromResult(new GetCodeResponse(url));
         }
@@ -70,7 +81,7 @@ namespace QuickPay.WxPay
             //设置必须参数
             request.SetNecessary(_config);
             //构造获取openid及access_token的url
-            var data = request.ToWxPayData();
+            var data = WxPayReflectUtil.ToWxPayData(request);
             var url = $"{request.Url}?{data.ToUrl()}{WxPayConsts.WechatRedirect}";
             var response = await HttpService.GetAsync(url);
             if (!response.Success)

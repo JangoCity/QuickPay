@@ -8,14 +8,16 @@ namespace QuickPay.WxPay
     {
         /// <summary>异步执行请求
         /// </summary>
-        Task<T> ExecuteAsync<T>(IWxPayRequest<T> request) where T : WxPayResponse;
+        Task<T> ExecuteAsync<T>(IWxPayRequest<T> request)
+            where T : WxPayResponse;
 
 
         /// <summary>生成页面执行参数
         /// </summary>
-        Task<string> ParamExecuteAsync<T>(IWxPayRequest<T> request, string signField = WxPayConsts.SignField.PaySign)
+        Task<string> ParamExecuteAsync<T>(IWxPayRequest<T> request,
+            string signField = WxPayConsts.SignField.PaySign)
             where T : WxPayResponse;
-
+ 
         /// <summary>获取Code的url
         /// </summary>
         Task<GetCodeResponse> GetCodeUrl(GetCodeRequest request);
