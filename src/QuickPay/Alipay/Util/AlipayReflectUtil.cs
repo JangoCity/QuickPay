@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
-using System.Threading.Tasks;
 using QuickPay.Common;
 
 namespace QuickPay.Alipay.Util
@@ -43,33 +41,40 @@ namespace QuickPay.Alipay.Util
 
         /// <summary>将微信请求转换为WxPayData
         /// </summary>
-        public static AlipayData ToAlipayData<T>(T wxPay) where T : IAlipay
+        public static AlipayData ToAlipayData(IAlipay alipay)
         {
             Delegate method;
-            if (!AlipayToDataDict.TryGetValue(typeof(T), out method))
+            var type = alipay.GetType();
+            if (!AlipayToDataDict.TryGetValue(type, out method))
             {
-                method = GetDataFunc<T>();
-                AlipayToDataDict.Add(typeof(T), method);
+                method = GetDataFunc(type);
+                AlipayToDataDict.Add(type, method);
             }
-            var func = method as Func<T, AlipayData>;
-            return func?.Invoke(wxPay);
+            var func = method as Func<object, AlipayData>;
+            return func?.Invoke(alipay);
         }
 
         /// <summary> 将IWxPay转换为WxPayData的委托
         /// </summary>
-        public static Func<T, AlipayData> GetDataFunc<T>() where T : IAlipay
+        public static Func<object, AlipayData> GetDataFunc(Type sourceType)
         {
             //数据源类型,IWxPayRequest实现类或子类
-            var sourceType = typeof(T);
             var targetType = typeof(AlipayData);
             // 定义参数,传递进来的UserInfo
-            var parameterExpr = Expression.Parameter(sourceType, "alipay");
+            var parameterExpr = Expression.Parameter(typeof(object), "o");
             var bodyExprs = new List<Expression>();
             //code:var wxPayData=new WxPayData();
             var alipayDataExpr = Expression.Variable(targetType, "alipayData");
             var newAlipayDataExpr = Expression.New(targetType);
             var assignAlipayDataExpr = Expression.Assign(alipayDataExpr, newAlipayDataExpr);
             bodyExprs.Add(assignAlipayDataExpr);
+
+            //code:var alipay=(Request)o;
+            var alipayExpr = Expression.Variable(sourceType, "alipay");
+            var castAlipayExpr = Expression.Convert(parameterExpr, sourceType);
+            var assignAlipayExpr = Expression.Assign(alipayExpr, castAlipayExpr);
+            bodyExprs.Add(assignAlipayExpr);
+
             //获取IWxPayRequest中所有的属性
             var properties = ReflectUtil.GetProperties(sourceType);
             foreach (var property in properties)
@@ -82,7 +87,7 @@ namespace QuickPay.Alipay.Util
                     //某属性的WxPayData中的Name值
                     var nameExpr = Expression.Constant(attribute.Name);
                     //(object)request.Id 默认转换为object
-                    var castValueExpr = Expression.Convert(Expression.Property(parameterExpr, property), typeof(object));
+                    var castValueExpr = Expression.Convert(Expression.Property(alipayExpr, property), typeof(object));
                     //code:wxPayData.SetValue("xxx",(object)request.Id)
                     var setValueExpr = Expression.Call(alipayDataExpr,
                         targetType.GetTypeInfo().GetMethod("SetValue", new Type[] { typeof(string), typeof(object) }),
@@ -100,9 +105,9 @@ namespace QuickPay.Alipay.Util
             }
             //此处需要注意,这里添加的相当于返回值
             bodyExprs.Add(alipayDataExpr);
-            var methodBodyExpr = Expression.Block(targetType, new[] { alipayDataExpr }, bodyExprs);
+            var methodBodyExpr = Expression.Block(targetType, new[] { alipayDataExpr, alipayExpr }, bodyExprs);
             // code: entity => { ... }
-            var lambdaExpr = Expression.Lambda<Func<T, AlipayData>>(methodBodyExpr, parameterExpr);
+            var lambdaExpr = Expression.Lambda<Func<object, AlipayData>>(methodBodyExpr, parameterExpr);
             var func = lambdaExpr.Compile();
             return func;
         }

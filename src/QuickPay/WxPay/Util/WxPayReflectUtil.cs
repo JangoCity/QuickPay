@@ -41,34 +41,41 @@ namespace QuickPay.WxPay.Util
 
         /// <summary>将微信请求转换为WxPayData
         /// </summary>
-        public static WxPayData ToWxPayData<T>(T wxPay) where T : IWxPay
+        public static WxPayData ToWxPayData(IWxPay wxPay)
         {
             Delegate method;
-
-            if (!WxPayToDataDict.TryGetValue(typeof(T), out method))
+            var type = wxPay.GetType();
+            if (!WxPayToDataDict.TryGetValue(type, out method))
             {
-                method = GetDataFunc<T>();
-                WxPayToDataDict.Add(typeof(T), method);
+                method = GetDataFunc(type);
+                WxPayToDataDict.Add(type, method);
             }
-            var func = method as Func<T, WxPayData>;
+            var func = method as Func<object, WxPayData>;
             return func?.Invoke(wxPay);
         }
 
         /// <summary> 将IWxPay转换为WxPayData的委托
         /// </summary>
-        public static Func<T, WxPayData> GetDataFunc<T>() where T : IWxPay
+        public static Func<object, WxPayData> GetDataFunc(Type sourceType)
         {
             //数据源类型,IWxPayRequest实现类或子类
-            var sourceType = typeof(T);
+            // var sourceType = typeof(T);
             var targetType = typeof(WxPayData);
-            // 定义参数,传递进来的UserInfo
-            var parameterExpr = Expression.Parameter(sourceType, "wxpay");
+            // 定义参数为object类型
+            var parameterExpr = Expression.Parameter(typeof(object), "o");
             var bodyExprs = new List<Expression>();
             //code:var wxPayData=new WxPayData();
             var wxPayDataExpr = Expression.Variable(targetType, "wxPayData");
             var newWxPayDataExpr = Expression.New(targetType);
             var assignWxPayDataExpr = Expression.Assign(wxPayDataExpr, newWxPayDataExpr);
             bodyExprs.Add(assignWxPayDataExpr);
+            
+            //code:var wxPay=(Request)o;
+            var wxPayExpr = Expression.Variable(sourceType, "wxPay");
+            var castWxPayExpr = Expression.Convert(parameterExpr, sourceType);
+            var assignWxPayExpr = Expression.Assign(wxPayExpr, castWxPayExpr);
+            bodyExprs.Add(assignWxPayExpr);
+
             //获取IWxPay中所有的属性
             var properties = ReflectUtil.GetProperties(sourceType);
             foreach (var property in properties)
@@ -81,7 +88,7 @@ namespace QuickPay.WxPay.Util
                     //某属性的WxPayData中的Name值
                     var nameExpr = Expression.Constant(attribute.Name);
                     //(object)request.Id 默认转换为object
-                    var castValueExpr = Expression.Convert(Expression.Property(parameterExpr, property), typeof(object));
+                    var castValueExpr = Expression.Convert(Expression.Property(wxPayExpr, property), typeof(object));
                     //code:wxPayData.SetValue("xxx",(object)request.Id)
                     var setValueExpr = Expression.Call(wxPayDataExpr,
                         targetType.GetTypeInfo().GetMethod("SetValue", new Type[] {typeof(string), typeof(object)}),
@@ -99,9 +106,9 @@ namespace QuickPay.WxPay.Util
             }
             //此处需要注意,这里添加的相当于返回值
             bodyExprs.Add(wxPayDataExpr);
-            var methodBodyExpr = Expression.Block(targetType, new[] {wxPayDataExpr}, bodyExprs);
+            var methodBodyExpr = Expression.Block(targetType, new[] {wxPayDataExpr, wxPayExpr }, bodyExprs);
             // code: entity => { ... }
-            var lambdaExpr = Expression.Lambda<Func<T, WxPayData>>(methodBodyExpr, parameterExpr);
+            var lambdaExpr = Expression.Lambda<Func<object, WxPayData>>(methodBodyExpr, parameterExpr);
             var func = lambdaExpr.Compile();
             return func;
         }
@@ -113,7 +120,7 @@ namespace QuickPay.WxPay.Util
 
         /// <summary>将WxPayData转换成IWxPay的委托
         /// </summary>
-        public static Func<WxPayData, T> GetWxPay<T>() where T : IWxPay
+        public static Func<WxPayData, T> GetWxPayFunc<T>() where T : IWxPay
         {
             var sourceType = typeof(WxPayData);
             var targetType = typeof(T);
@@ -158,14 +165,14 @@ namespace QuickPay.WxPay.Util
             return func;
         }
 
-        /// <summary>将WxPayData转换成WxPayResponse
+        /// <summary>将WxPayData转换成IWxPay
         /// </summary>
         public static T ToWxPay<T>(WxPayData wxPayData) where T : IWxPay
         {
             Delegate method;
             if (!DataToWxPayDict.TryGetValue(typeof(T), out method))
             {
-                method = GetWxPay<T>();
+                method = GetWxPayFunc<T>();
                 DataToWxPayDict.Add(typeof(T), method);
             }
             var func = method as Func<WxPayData, T>;

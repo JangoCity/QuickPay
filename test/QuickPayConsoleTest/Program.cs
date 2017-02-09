@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using QuickPay.WxPay;
+using QuickPay.WxPay.Notify;
 using QuickPay.WxPay.Request;
 using QuickPay.WxPay.Response;
 using QuickPay.WxPay.Util;
@@ -37,17 +38,21 @@ namespace QuickPayConsoleTest
                 SignType = WxPayConsts.SignType.Md5
             };
             IWxPayClient client = new WxPayClient(config);
-            // var request = new UnifiedOrderRequest("outTradeNo", 300, "hello", "", WxPayConsts.TradeType.App);
-            // var response = client.ExecuteAsync(request);
-            //
+            //var request = new UnifiedOrderRequest("outTradeNo", 300, "hello", "", WxPayConsts.TradeType.App);
+            //var response = client.ExecuteAsync(request);
             //if (response.ReturnSuccess && response.ResultSuccess)
             //{
             //    var callRequest=new AppUnifiedOrderCallRequest(response.PrepayId);
             //    var result = client.ParamExecuteAsync(callRequest);
             //}
-            var request2 = new AppUnifiedOrderCallRequest("123333");
-            var str = client.ParamExecuteAsync(request2, "").Result;
-            Console.WriteLine(str);
+            //var request2 = new AppUnifiedOrderCallRequest("123333");
+            //var str = client.ParamExecuteAsync(request2).Result;
+            //var queryOrderRequest=new QueryOrderRequest("1233344");
+            //var result = client.ExecuteAsync(queryOrderRequest).Result;
+
+            WxPayReflectUtil.ToWxPay<UnifiedOrderNotify>(new WxPayData());
+
+            Console.WriteLine();
 
             Console.ReadKey();
         }
